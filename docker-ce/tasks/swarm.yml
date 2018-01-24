@@ -1,0 +1,59 @@
+- name: "Hosts"
+  hosts: 
+   - all
+  become: yes
+
+  pre_tasks:
+
+   - name: "Swarm | install docker-py"
+     pip:
+      name: "docker-py"
+      state: present
+
+  tasks:
+
+   - name: "Swarm | docker-ce create cluster [init]"
+     command: docker swarm init
+     when: "'swarm-master' in group_names"
+     ignore_errors: yes
+
+   - name: "Swarm | docker-ce address"
+     shell: docker info | awk '/Node Address/ {print $3}'
+     register: address
+     delegate_facts: True
+     delegate_to: "{{ groups['swarm-master'][0] }}"
+     ignore_errors: yes
+
+   #- debug: var=group_names
+
+   - name: "Swarm | docker-ce token [manager]"
+     command: docker swarm join-token -q manager
+     register: token
+     delegate_facts: True
+     delegate_to: "{{ groups['swarm-master'][0] }}"
+     when: "'swarm-manager' in group_names"
+     ignore_errors: yes
+
+   - name: "Swarm | docker-ce add in cluster [manager]"
+     command: docker swarm join --token {{ token.stdout }} {{address.stdout}}:2377
+     when: "'swarm-manager' in group_names"
+     ignore_errors: yes
+
+   #- debug: var=token.stdout
+   #  when: "'manager' in group_names"
+
+   - name: "Swarm | docker-ce token [worker]"
+     command: docker swarm join-token -q worker
+     register: token
+     delegate_facts: True
+     delegate_to: "{{ groups['swarm-master'][0] }}"
+     when: "'swarm-worker' in group_names"
+     ignore_errors: yes
+
+   - name: "Swarm | docker-ce add in [worker]"
+     command: docker swarm join --token {{ token.stdout }} {{address.stdout}}:2377
+     when: "'swarm-worker' in group_names"
+     ignore_errors: yes
+   
+   #- debug: var=token.stdout
+   #  when: "'worker' in group_names"

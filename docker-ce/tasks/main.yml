@@ -1,0 +1,8 @@
+---
+# tasks file for docker-docker-ce
+- import_playbook: docker-ce.yml
+  tags: docker-ce
+- import_playbook: swarm.yml
+  tags: swarm
+- import_playbook: ctop.yml
+  tags: ctop
