@@ -1,4 +1,5 @@
 # Docker-ce Swarm 17.12
+![alt text](imgs/swarm.png#center "Login")
 
 ## Clone do projeto
 
