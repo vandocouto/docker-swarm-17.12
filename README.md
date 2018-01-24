@@ -40,3 +40,7 @@ swarm-worker
 ansible_ssh_user=ubuntu
 <b>ansible_ssh_private_key_file=~/Dropbox/chave-aws/key.pem</b>
 </pre>
+
+<pre>
+ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i hosts tasks/main.yml
+</pre>
