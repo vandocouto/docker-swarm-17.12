@@ -38,5 +38,5 @@ swarm-worker
 
 [all:vars]
 ansible_ssh_user=ubuntu
-ansible_ssh_private_key_file=~/Dropbox/chave-aws/key.pem
+<b>ansible_ssh_private_key_file=~/Dropbox/chave-aws/key.pem</b>
 </pre>
