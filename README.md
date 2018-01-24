@@ -7,7 +7,7 @@
 $ https://github.com/vandocouto/docker-swarm-17.12.git
 </pre>
 
-## Arquivos hosts (Ajuste os IP's)
+## Arquivos hosts (Ajuste os IP's / Keypair)
 <pre>
 [docker-ce]
 master1     ansible_ssh_host=10.0.100
